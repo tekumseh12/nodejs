@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html charset="en" ng-app="ss">
+<head>
+<title> formular</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+<script src="index.js"></script>
+
+</head>
+<body ng-controller="lCtrl">
+<form action="/lama" method="POST">
+<input type="text" ng-model="meno">
+<input type="submit" value = "stlac">
+{{taka() }}
+<div ng-view></div>
+</form>
+
+
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+var router = express.Router()
+var mongoose = require("mongoose")
+var url= "mongodb://localhost/mydb"
+mongoose.connect(url, {useNewUrlParser:true})
+var bodyParser=require("body-parser")
+app.use(bodyParser.urlencoded({extended:false}));
+
+
+
+app.use(express.static("public"))
+var router = express.Router()
+router.get('/users/:userId/:books/:bookId', function (req, res) {
+  res.send(req.params +"k")
+});
+		
+router.post("/lama",( req,res)	=> {
+	var a = {fname: req.body}
+	
+	res.send(JSON.stringify(a));	
+});
+app.use(router)
+var server = app.listen(8080, function(req,res){
+	var address = server.address().address
+	var post = server.address().port
+	console.log(address, post)
+});https://mongoosejs.com/docs/connections.html
+
+
+
+
+
+
+
+
+
+
+
+
+server 
+var mongoose = require("mongoose")
+var url  ="mongodb://localhost/mydb"
+var express = require("express");
+var app = express()
+var bodyParser = require("body-parser")
+app.use(bodyParser.urlencoded({extended:false}));
+app.set('view engine', 'ejs');
+mongoose.connect(url,{useNewUrlParser: true})
+var Schema = mongoose.Schema
+var pattern = new Schema({
+	name:String,
+	password:String
+
+});	
+var Users = mongoose.model("User", pattern)
+
+app.get("/login", function(req,res){
+	res.render("templates/login");
+});
+
+app.get("/register", function(req,res){
+	res.render("templates/register");
+});
+app.post("/registerPage", function(req,res){
+	var names = req.body.meno;
+	var passwords = req.body.password;
+	var user = new Users({
+    	name: names,
+    	password: passwords
+});
+	user.save(function(err){
+		if (err) throw err;
+		console.dir("successfully accomplished")
+		
+	});
+app.get("/registerPage", function(req,res){
+	res.render("templates/registerPage")
+});
+	
+});
+app.listen(8080)
+
+
+work with mongodb 
+
+var mongoose = require("mongoose")
+var url  ="mongodb://localhost/mydb"
+mongoose.connect(url, {useNewUrlParser:true})
+var express = require("express")
+var url = require("url")
+var fs = require("fs")
+var app = express()
+
+var schema = mongoose.Schema({name:String, password:String})
+let user = mongoose.model("User", schema)
+
+app.get("/", function(req,res){
+	user.find({name:"l"}, function(err,data){
+		if (err) res.status(500).send(err)
+		
+		res.status(200).send(data[5].name)
+	});
+	
+});
+app.listen(8080)

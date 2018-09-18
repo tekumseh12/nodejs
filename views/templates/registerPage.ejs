@@ -1,0 +1,32 @@
+
+<html charset="en">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<title> registrovany </title>
+
+</head>
+<body>
+<h1>uspesne si sa registroval <%= names %></h1>
+<div ng-app = "login" ng-controller="lCtrl as th">
+<a href="login"><button >login</button></a>
+{{ th.lama }}
+</div>
+
+
+<script>
+angular.module("login", [])
+.controller("lCtrl", function($location){
+	this.login = function(){
+		$location.path("/login")
+		
+	}
+	this.ano="lama";
+
+});
+</script>
+
+
+
+
+</body
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html charset="en">
+<head>
+<title> formular</title>
+
+
+<link rel="stylesheet" type="text/css" href = "css/register.css">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+</head>
+
+<body ng-app = "validate" ng-controller="vCtrl as th">
+<h1> Register now! </h1>
+<form action="/registerPage" method="post" ng-keypress="th.validate()">
+<label for = "meno">Meno:</label>
+<input type="text" name="meno" id ="meno" ng-model="th.meno">
+<div style="color:red" ng-show=th.error_n>{{ th.msg_n }}</div><br>
+<label for = "heslo">Heslo:</label>
+<input type="password" name="password" id="heslo" ng-model="th.password">
+<div style="color:red" ng-show=th.error_p>{{ th.msg_p }}</div><br>
+<input type="submit" value="register">
+</form>
+<ul> registrovani: 
+<% for (i=0;i<users.length;i++){ %>
+<li> <%= users[i].name %> </li>
+<% } %>
+
+</ul>
+
+
+<script src = validate.js></script>
+</body>
+</html>

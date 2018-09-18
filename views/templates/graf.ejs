@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>Anketa</title>
+<link rel="stylesheet" type="text/css" href="css/graf.css">
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+</head>
+<body  ng-app="anketa" ng-controller="aCtrl as anketa">
+<form action=" " method = "get">
+<div  ng-repeat="x in anketa.vyber"><input type="radio" name="OPsystem"  ng-model="anketa.x"  ng-value="x.toLowerCase()">{{ x }} </div>
+<input type="submit" ng-click="anketa.potvrd()" value = "Potvrd">
+</form>
+
+<div ng-show="true" id ="disa"><%= win %></div>
+
+
+
+<script src="graf.js"></script>
+<div id ="charte" ></div>
+
+
+
+</body>
+</html>
+

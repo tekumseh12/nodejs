@@ -1,0 +1,28 @@
+{
+  "name": "server.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "devserver": "node_modules/.bin/nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "heroku"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-route": "^1.6.4",
+    "body-parser": "^1.18.3",
+    "client-sessions": "^0.8.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "git": "^0.1.5",
+    "mongoose": "^5.2.9"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  }
+}

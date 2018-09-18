@@ -1,0 +1,29 @@
+body {
+	margin-top:200px;
+ 	text-align:center;
+	background-image:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmckSHinK3QPXYBcoikyiJ3F3SndNWa4xTdgQLrZZQAMfD2O0n_Q");
+	
+}
+div {
+	
+	
+	margin-left:0px;
+
+}
+h1 {
+	
+	color:white;
+	font-size:40px;
+	
+	
+}
+
+input {	
+	overflow:hidden;
+	margin:2px;
+	
+	
+	
+
+}
+

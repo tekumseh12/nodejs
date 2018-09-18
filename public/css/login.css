@@ -1,0 +1,14 @@
+body {
+ 	background-image:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtITu6vfZ-DlhIAWsnIPACRFuqeV7bvqbJOvOE8lcP7YkpC66x");
+	background-size:cover;
+	
+}
+form {
+	text-align:center;
+	margin-top:300px;
+	
+}
+input {
+	margin:5px
+
+}
