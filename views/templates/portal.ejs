@@ -1,11 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="css/portal.css">
+<link rel="stylesheet" type="text/css" href="../css/portal.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src = "/socket.io/socket.io.js"></script>
 </head>
-<body>
-<h1>uspesne prihlaseny <%= meno%></h1>
 
-<a href="signout"><button >sign out</button></a>
+<body>
+<ul type="none">
+	<li><a>My blog</a></li>
+	<li class = "projects"><a>My Projects</a>
+		<div class="content1">
+			<a href="snake">Snake</a>
+			<a href="kalkulacka">Kalkulacka</a>
+			<a href="weatherapp">Pocasie</a>
+		</div>
+		
+	</li>
+	
+	<li><a>Programing Languages</a></li>
+	<li><a>Frameworks</a></li>
+	<li class ="name"><a ><%= meno%></a>
+		<div class = "content">
+			<a href = "signout"><button>Sign out</button></a>
+		</div>
+
+	</li>
+	
+</ul>
+.........
+<ul class = "message">
+	
+</ul>
+<div class = "message"> </div>
+<form action = "">
+	<div class = "message_bar">
+		<input type = "text" autocomplete="off" name = "message"><button>Send</button>
+		
+	</div>
+</form>
+
+<script>
+$(document).ready(function(){
+	var socket = io()
+	$("form").submit(function(){
+		socket.emit("chat_message", $("input").val())
+		$("input").val("")
+		return false
+		
+	})
+	socket.on("chat_message",function(msg){
+		$(".message").append($("<li >").text(msg))
+		alert("peha")
+	})
+	
+	$(".name").mouseenter(function(){
+		$(".content").css("display", "block")
+	})
+	$(".name").mouseleave(function(){
+		$(".content").css("display", "none")
+	})
+})
+</script>
 <body>
 </html>

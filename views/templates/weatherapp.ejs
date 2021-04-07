@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+body {
+	margin:0;
+}
+header {	
+	
+	text-align:center;
+	height:200px;
+	width:100%;
+	background-color:rgb(200,200,200);
+}
+input {
+	
+	margin-top:80px;
+	
+
+}
+.container {
+	margin-left:400px;
+	width:250px;
+	background-color:red;
+	border:1px solid black;
+	
+}
+div {
+	margin-top:0;
+	text-align:center;
+	
+}
+</style>
+<title>Weather App</title>
+</head>
+<body>
+<header>
+<form action=" " method="get">
+<label for="mesto">Zadaj mesto</label>
+<input type="text" id = "mesto" name="mesto">
+<input type="submit" value="Click">
+</form>
+</header>
+<% if (mena[0] != undefined){ %>
+	<% mena.forEach(function(meno){ %>
+		<div class = "container">
+		<div><%= meno %><br /></div>
+		<div>There have got <%= mesta[meno].main.temp %> Temperatures</div>
+		<div>The max Temperature: <%= mesta[meno].main.temp_max %></div>
+		<div>The min Temperature: <%= mesta[meno].main.temp_min %></div>
+		</div>
+	<% }) %>
+<% } %>
+	
+</body>
+
+</html>

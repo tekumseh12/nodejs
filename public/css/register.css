@@ -6,8 +6,7 @@ body {
 }
 div {
 	
-	
-	margin-left:0px;
+
 
 }
 h1 {
@@ -21,9 +20,11 @@ h1 {
 input {	
 	overflow:hidden;
 	margin:2px;
-	
-	
-	
-
 }
-
+ul {
+	list-style-type:none;
+}
+li {
+	text-align:left;
+	margin-left:460px;
+}

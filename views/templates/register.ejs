@@ -23,11 +23,12 @@
 <div style="color:red" ng-show=th.error_p>{{ th.msg_p }}</div><br>
 <input type="submit" value="register">
 </form>
-<ul> registrovani: 
+<p> registrovani</p>
+<ul>  
 <% for (i=0;i<users.length;i++){ %>
 <li> <%= users[i].name %> </li>
 <% } %>
-
+<li><%= error %></li>
 </ul>
 
 

@@ -1,66 +1,116 @@
 var express = require("express")
+var fs = require("fs")
 var router = express.Router()
 var Users = require("../db/mongo")
 var Grafs = require("../db/anketa")
-function grafdb(){
+var async = require("async")
+var request = require("request")
 	
-	Grafs.create({win:0,linux:0,mac:0,other:0}, function(err, data){
-		if (err) throw err
 		
-	})
-}
-router.get("/anketa", function(req,res){
-	
-	if (typeof req.session.user == "object"){
-		let win; 
-		let mac;
-		let linux; 
-		let other; 
-		if (req.query.OPsystem != "undefined"){
-			
-			let promise1 = new Promise(function(fulfill, reject){
 
-				Grafs.find({}, function(err, data){
-					if (err) reject(err)
-					let b = req.query.OPsystem
-					let graf = {}
-					graf[req.query.OPsystem] = data[0][b]+1
-					fulfill(graf)
-				})
-			}).then(function(value){
-				Grafs.updateOne({}, value, function(err,data){
+
+
+router.get("/anketa", function(req,res){
+	console.log(req.session.user)
+	if (req.session.user !== undefined){
+	
+		async.waterfall([
+			function(cb){
+				Grafs.find({},function(err,data){
 					if (err) throw err
-					win = data.win
-					mac = data.mac
-					linux = data.linux
-					other = data.other
+					let b = req.query.OPsystem
+					var graf = {anketa:false}
+					graf[b] = data[0][b]+1
+					console.log(graf)
+					cb(null, graf)
+				})
+			
+			},
+			function( graf,cb){				
+				Grafs.updateOne({}, graf, function(err,data){
+					if (err) throw err
 					
 				})
-			})
-			Users.updateOne({_id:req.session.user[0]._id},{anketa:false}, function(err,data){
-				if (err) throw err;
+				Grafs.find({},function(err,data){
+					if (err) throw err
+					cb(null, data)
+					
+				})
+		
+		
+						
+			}], async function(err, datas){
+				let  data = JSON.stringify(datas)
 			
-			})
-		}
-		let promise = new Promise(function(fulfill, reject){
-			Users.findById({_id:req.session.user[0]._id},function(err,data){
-				if (err) reject(err)
-				fulfill(data)
+				let promise = new Promise((fulfill, reject)=>{
+					fs.writeFile("C:/stranka/public/portal/graf.json",data, function(err){
+			
+						if (err) reject(err)
+					
+						fulfill("ano")
+					
+					
+					})
 				
+						
+				})	
+				let a = await promise	
+				if (err) console.log(err)
+				console.log(2)
+				res.render("templates/graf")
 			})
-		})
-		
-		promise.then(function(value){
-			res.render("templates/graf", {anketa:value.anketa, mac:mac,linux:linux,other:other,win:win})
-		})
-		
-		
-		
-	}
-	else {
+	}else{
 		res.redirect("/login")
 	}
+
+})
+router.get("/snake", function(req,res){
+	res.render("templates/snake")
+})
+router.get("/kalkulacka", function(req,res){
+	res.render("templates/kalkulacka")
+})
+var apiKey = '4fc65fb56356e1275aca92c1a2e9efd3'
+
+
+function getWeather(city){
+	return new Promise((fullfil,reject)=>{
+		let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
+		request(url, function(err,response,body){
+
+			
+			if(err){
+    				reject(err)
+  			} else {
+				
+				parse = JSON.parse(body)
+				console.log(parse)
+				fullfil(parse)
+  			}
 	
+		})
+	})
+	
+}
+
+var weather = {}
+var mena = []
+router.get("/weatherapp", function(req,res){
+	if (req.session.user !== undefined){
+		if (req.query.mesto == undefined){
+			res.render("templates/weatherapp", {mesta:{} ,mena:[]})
+		}else{
+		
+			getWeather(req.query.mesto).then(function(pocasie){
+				weather[pocasie.name] = pocasie
+				console.log(weather)
+				mena.unshift(pocasie.name)
+				res.render("templates/weatherapp", {mesta:weather, mena:mena})
+			})
+		}
+	}else {
+		res.redirect("/login")
+	}
 })
 
 module.exports = router

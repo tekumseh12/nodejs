@@ -1,0 +1,81 @@
+router.get("/anketa", function(req,res){
+	
+	if (typeof req.session.user == "object"){
+		var win; 
+		var mac;
+		var linux; 
+		var other;
+		console.log( req.session.user)
+		var anketa;
+		if (req.query.OPsystem != undefined){
+			
+			async.parallel([
+				function(cb){
+					
+				 	Grafs.find({},function(err,data){
+						if (err) throw err
+						let b = req.query.OPsystem
+						let graf = {anketa:"false"}
+						
+						graf[req.query.OPsystem] = data[0][b]+1
+						
+			
+			 			Grafs.updateOne({}, graf, function(err,data){
+							if (err) throw er	
+							cb()
+							
+						})
+						
+							
+			
+					
+					})
+					
+				},
+				function(cb){
+					Grafs.findOne({}, function(err,find){
+						if (err) throw err
+						win = find.win
+						mac = find.mac
+						linux = find.linux
+						other = find.other
+						anketa = find.anketa
+						cb()
+					})	
+					
+				}
+					
+				
+			],function(data){
+				
+				
+				res.render("templates/graf", {anketa:"", mac:mac,linux:linux,other:other,win:win})
+				
+			})
+		} else {
+			let promise = new Promise(function(fulfill, reject){
+				Grafs.findOne({}, function(err, data){
+					win = data.win
+					
+					mac = data.mac
+					linux = data.linux
+					other = data.other	
+				})
+				Users.findById({_id:req.session.user[0]._id},function(err,data){
+					if (err) reject(err)
+					fulfill(data)
+				
+				})
+			})
+		
+			promise.then(function(value){
+				res.render("templates/graf", {anketa:value.anketa, mac:mac,linux:linux,other:other,win:win})
+			})
+		
+		
+		}
+	} else {
+		res.redirect("/login")
+	}
+	
+})

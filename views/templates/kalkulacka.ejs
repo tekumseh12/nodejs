@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<title>Kalkulacka</title>
+<style>
+form {
+    border:1px solid black;
+    width:22.1%;
+    background-color:blue;
+    overflow:hidden;
+    height:280px;
+   
+}
+.numbers{
+	 
+	 max-width:80.5%;
+}
+body {
+	margin:10px;
+    background-color:grey;
+}
+input[type="text"]{
+	 background-color:yellow;
+     padding:10px;
+     margin:10px;
+}
+button, input {
+	 background-color:red;
+     padding:8px;
+     margin:5px;
+     
+     
+     
+     
+     
+}
+.operations {
+    width:10.5px;
+    
+    
+    
+}
+div {
+	float:left;
+    
+    
+}
+</style>
+</head>
+<body>
+<form  ng-app="calculator" ng-controller="cctrl as cl">
+
+
+<input type="text"autocomplete="off "ng-model="cl.priklad" ng-keydown="cl.keyboard($event)" 
+ng-keyup="cl.keyboard1($event)">
+<hr>
+<div class = "numbers">
+<div ng-repeat="x in cl.cisla1">
+<button ng-click="cl.edit(x)">{{x}}</button>
+</div>
+<button ng-click="cl.ediot('.')" style="padding-right:12px">.</button>
+<button ng-click="cl.edito('*')" style="margin:0px">*</button>
+<button ng-click="cl.edito('%')" style="padding-left:2px" >%</button>
+<button ng-click="cl.delete()"  >C</button>
+<input type="submit" value="=" ng-click="cl.vypocitaj()" style= "margin-left:1px">
+
+
+</div>
+<div class = "operations"  >
+<button ng-click="cl.edito('+')">+</button>
+<button ng-click="cl.edito('-')">-</button>
+<button ng-click="cl.edito('/')">/</button>
+
+</div>
+
+</form>
+
+
+
+<script>
+
+
+
+l = document.getElementB
+angular.module("calculator",[]).controller("cctrl", function(){
+	
+	this.priklad=""
+    this.vysledok=0
+    this.cisla=[]
+	this.cisla1=[9,8,7,6,5,4,3,2,1,0]
+    this.operation = [".","+","-","*","/","%"]
+    this.eventNumber = [190,107,109,106,111]
+    this.delete = function(){
+    	this.priklad=""
+   	    this.vysledok=0
+    }
+    this.prednost = function(){
+    	nas = this.cisla.indexOf("*")
+        del = this.cisla.indexOf("/")
+        mensie = nas < del ? 0:1
+        if (mensie){
+        	vysledok_nasobku = parseInt(this.cisla[nas-1]) * parseInt(this.cisla[nas+1])
+            this.cisla.splice(nas-1,3,vysledok_nasobku )
+        
+        }
+         if (!mensie){
+        	vysledok_delenia=parseInt(this.cisla[del-1]) / parseInt(this.cisla[del+1])
+            this.cisla.splice(del-1,3, vysledok_delenia)
+        
+        }
+
+        
+       
+        
+    }
+	this.keyboard = function(event){
+    	
+    	for (i=0;i<this.eventNumber.length;i++){
+    		switch(event.keyCode){
+            
+        		case this.eventNumber[i]:
+                	this.priklad+=" "  
+                    break
+                
+        	}
+        }
+        
+    	
+    }
+    this.keyboard1 = function(event){
+    	
+    	for (i=0;i<this.eventNumber.length;i++){
+    		switch(event.keyCode){
+            
+        		case this.eventNumber[i]:
+                	this.priklad+=" "  
+                    break
+                
+        	}
+        }
+        
+    	
+    }
+    this.edit= function(x){
+    	this.priklad+=x
+    }
+    this.edito=function(x){
+    	this.priklad+=" "+x+" "
+    }
+    this.vypocitaj=function(){
+    	this.cisla=this.priklad.split(" ")
+        no_nasobok_or_delitel=true;
+        while (no_nasobok_or_delitel){
+        	if (this.cisla.indexOf("*") >=3 || this.cisla.indexOf("/")>=3){
+        		this.prednost()
+        	}
+            else{
+            	 no_nasobok_or_delitel=false
+            }
+        }
+        var length = this.cisla.length
+        for (i = 3;i<=length;i=i+2){
+        	
+        	switch(this.cisla[1]){
+            	case "*":
+                	this.vysledok=parseInt(this.cisla[0])*parseInt(this.cisla[2])
+                    break
+      			case "/":
+                	this.vysledok=parseInt(this.cisla[0])/parseInt(this.cisla[2])
+                    break
+                case "%":
+                			this.vysledok=parseInt(this.cisla[0])%parseInt(this.cisla[2])
+                    break
+                case "+":
+                	this.vysledok=parseInt(this.cisla[0])+parseInt(this.cisla[2])
+                    break
+                case "-":
+                	this.vysledok=parseInt(this.cisla[0])-parseInt(this.cisla[2])
+                    break
+                		
+           	
+            }
+            this.cisla.splice(0,3)
+            this.cisla.unshift(this.vysledok)
+            
+        
+            
+      	}  
+        this.priklad = this.vysledok
+        this.priklad=this.priklad.toString()
+        
+    }
+   
+
+})
+
+
+</script>
+</body>
+</html>

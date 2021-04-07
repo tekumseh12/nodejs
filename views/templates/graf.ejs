@@ -13,11 +13,52 @@
 <input type="submit" ng-click="anketa.potvrd()" value = "Potvrd">
 </form>
 
-<div ng-show="true" id ="disa"><%= win %></div>
 
 
+<div id = "l"></div>
+<script src = graf.js></script>
+<script>
+async function anketa() {
+	let promise = new Promise ((fulfill,reject)=>{
+		var xhttp = new XMLHttpRequest()
+		
+		xhttp.onreadystatechange = function(){
+			if (this.readyState == 4 && this.status== 200){
+				fulfill(this.responseText)
+		
+			}
+			
+		
+		}
+		xhttp.open("GET","http://localhost:8080/portal/graf.json", true)
+		xhttp.send()
+	})
+	let b = await promise
+	console.log(b)
+	let a = JSON.parse(b)
+	console.log(a[0].windows)
+	var chart = new CanvasJS.Chart("charte",{
+		title:{
+			text:"commited"
 
-<script src="graf.js"></script>
+		},
+		data:[{
+			type:"column",
+			dataPoints:[
+				{label:"Windows", y:a[0].windows},
+				{label:"Linux", y:a[0].linux},
+				{label:"Mac", y:a[0].mac},
+				{label:"Other", y:a[0].other}
+			]
+		}]
+	
+			
+	})
+	chart.render()
+	
+}
+anketa()
+</script>
 <div id ="charte" ></div>
 
 

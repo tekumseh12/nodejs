@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Chest</title>
+<style>
+body {
+	background-color:red;
+    margin:0
+}
+</style>
+</head>
+<body>
+
+<canvas id = "canvas" width="400" height="400"></canvas>
+<script>
+
+
+
+
+class Platno {
+	constructor(platno){
+		this.canv = platno
+        this.medzera = 0
+        this.figurky = [[],[]]
+     	this.tah=0
+		this.obs = this.canv.getContext("2d");
+		this.obs.scale(50,50)
+        this.kliknuty = []
+        
+		
+        this.miesta = function(x){
+        	this.doska()
+            this.Vykresli()
+        	for (let i =0;i<x.length;i++){
+            	
+        		this.obs.fillStyle="green"
+           	 	this.obs.fillRect(x[i][0],x[i][1],1,1)
+                
+         	}
+            
+        }
+        this
+        this.direction = function(x){
+        	
+        	if (x[0] == this.kliknuty.chod1[0][0] && x[1] == this.kliknuty.chod1[0][1] || x[0] == this.kliknuty.chod1[1][0] && y[0] == this.kliknuty.chod1[1][1]) {
+            	this.figurky[this.tah][this.kliknuty[x]]
+            
+            }
+            for (let z = 0;z< this.figurky[this.tah].length;z++){
+            	
+            	
+            	if (x[0] == this.figurky[this.tah][z].ziskajxy()[0] & x[1] == this.figurky[this.tah][z].ziskajxy()[1]){
+                	this.kliknuty = this.figurky[this.tah][z]
+                    
+                	if (this.tah == 0){
+                    	this.miesta(this.figurky[this.tah][z].chod1)
+                        
+                        this.tah = 1
+                    }else{
+                    	this.miesta(this.figurky[this.tah][z].chod2)
+                        this.tah = 0
+                    }
+                    
+                }
+           	}
+        }
+        this.vytvorpesiakov=function(strana,l,farba){
+        	
+    		for (let p = l ;p<=l;p+=1){
+        		for (let z = 0 ;z<8;z++){
+            		strana.push(new Pesiak(z,p,farba))
+            	}
+        	}
+        }
+        
+        this.vytvorHorses=function(strana,l,farba){
+        	for (let p = 1 ;p<=7;p+=5){
+        		strana.push(new Horse(p,l,farba))
+       	    }
+        }
+        this.vytvorTowers=function(strana,l,farba){
+        	for (let p = 0 ;p<=8;p+=7){
+        		strana.push(new Tower(p,l,farba))
+       	    }
+        }
+        this.vytvorShooter=function(strana,l,farba){
+        	for (let p = 2 ;p<=6;p+=3){
+        		strana.push(new Shooter(p,l,farba))
+        	}
+        }
+        
+        this.vytvorKrala=function(strana,l,p,farba){
+
+            strana.push(new Kral(p,l,farba))
+
+    	}
+         this.vytvorDamu=function(strana,l,p,farba){
+
+            strana.push(new Dama(p,l,farba))
+
+    	}
+	
+	this.doska=function(){
+    	this.obs.fillStyle="black"
+        this.obs.fillRect(0,0,this.canv.width,this.canv.height);
+		let k = 0
+		for (let y = 0;y<8;y++){
+    		for (let x = 0;x<8;x+=2){
+        		if (this.medzera != 0){
+            		k=1
+       			}else{
+            		k=0
+            	}
+        		this.obs.fillStyle="white"
+        		this.obs.fillRect(x+k,y,1,1);
+       	 	}
+       		if (this.medzera == 0){
+            	 this.medzera=1
+       	 	} else {
+             	this.medzera=0
+       	 	}
+        
+   		}
+	}
+    this.Vykresli=function(){
+    	for (let y = 0;y<this.figurky.length;y++){
+        	 for (let x = 0;x<this.figurky[y].length;x++){
+             
+        	 	this.obs.fillStyle=this.figurky[y][x].farba
+       		 	this.obs.font = "0.8px Arial";			
+             	this.obs.fillText(this.figurky[y][x].znak,this.figurky[y][x].x+0.2,this.figurky[y][x].y+0.8)	
+             }
+        	
+        }
+    }
+    
+    
+    }
+    VytvorFigurky(){
+    	let color = "red"
+        let p=0
+        let o=0
+    	for (let x = 0;x<2;x++){
+    		this.vytvorpesiakov(this.figurky[x],1+p,color)
+        	this.vytvorTowers(this.figurky[x],0+o,color)
+            this.vytvorHorses(this.figurky[x],0+o,color)
+            this.vytvorShooter(this.figurky[x],0+o,color)
+           
+        	color = "blue"
+        	p=5
+            o=7
+        }
+        this.vytvorKrala(this.figurky[0],0,3,"red")
+        this.vytvorKrala(this.figurky[1],7,4,"blue")
+        this.vytvorDamu(this.figurky[0],0,4,"red")
+        this.vytvorDamu(this.figurky[1],7,3,"blue")
+    }
+    
+    
+}
+class Pesiak{
+	constructor(x,y,farba){
+    	
+		this.znak = "P"
+        this.x=x
+        this.y=y
+        this.farba= farba
+        this.chod1 = [[this.x,this.y+1],[this.x,this.y+2]]
+        this.chod2 = [[this.x,this.y-1],[this.x,this.y-2]]
+    }
+    
+	ziskajxy(){
+    	return [this.x,this.y]
+    }
+    smer(){
+    	return this.y+1
+    }
+}
+class Dama{
+	constructor(x,y,farba){
+		this.znak = "D"
+        this.x=x
+        this.y=y
+        this.farba= farba
+        
+    }
+	ziskajxy(){
+    	return [this.x,this.y]
+    }
+}
+class Kral  {
+	constructor(x,y,farba,znak){
+    	this.x=x
+        this.y=y
+        this.znak = "K"
+        this.farba= farba
+       	
+    }
+    ziskajxy(){
+    	
+    	return [this.x,this.y]
+    }
+}
+class Horse  {
+	constructor(x,y,farba,znak){
+    	this.x=x
+        this.y=y
+        this.znak = "H"
+        this.farba= farba
+       	
+    }
+    ziskajxy(){
+    	return [this.x,this.y]
+    }
+}
+class Shooter  {
+	constructor(x,y,farba,znak){
+    	this.x=x
+        this.y=y
+        this.znak = "S"
+        this.farba= farba
+       	
+    }
+    ziskajxy(){
+    	return [this.x,this.y]
+    }
+}
+class Tower  {
+	constructor(x,y,farba,znak){
+    	this.x=x
+        this.y=y
+        this.znak = "T"
+        this.farba= farba
+       	
+    }
+    ziskajxy(){
+    	return [this.x,this.y]
+    }
+}
+
+
+let platno = new Platno(document.getElementById("canvas"))
+addEventListener("click", klik)
+platno.VytvorFigurky()
+platno.doska()
+platno.Vykresli()
+
+
+function klik(event){
+        	
+        	var pos_mysi = [Math.floor(event.x/50),Math.floor(event.y/50)]
+            platno.direction(pos_mysi)
+}
+</script>

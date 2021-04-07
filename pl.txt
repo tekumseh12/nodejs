@@ -26,6 +26,53 @@ var server = app.listen(8080, function(req,res){
 });https://mongoosejs.com/docs/connections.html
 
 
+-----------------
+function getGrafVariables(){
+			
+
+			Grafs.findOne({}, function(err,data){
+				if (err) console.log(err)
+				win = data.win
+				mac = data.mac
+				
+				linux = data.linux
+				other = data.other
+				anketa = data.anketa	
+			})	
+		}
+		function update(value){
+			
+			Grafs.updateOne({}, [value,{anketa:false}], function(err,data){
+				if (err) console.log(err)			
+			})
+		}
+
+		if (req.query.OPsystem != undefined){
+			async.parallel([
+				function(cb){
+				 	Grafs.find({}, function(err, data){
+						if (err) console.log(err)
+						let b = req.query.OPsystem
+						let graf = {}
+						console.log(1)
+						graf[req.query.OPsystem] = data[0][b]+1
+						update(graf)
+						
+					
+					})
+					cb(null, "one")
+				},
+				function(cb){
+					getGrafVariables()
+					console.log(1)
+					cb(null, "two")
+					
+				}
+			]),function(err,value){
+				if (err) console.log(err)
+				console.log(value)
+				res.render("templates/graf", {anketa:"", mac:mac,linux:linux,other:other,win:win})
+			}
 
 
 
